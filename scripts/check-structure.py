@@ -30,6 +30,7 @@ LARGE_FILE_BASELINE = {
     "src/laitoxx/features/photo_geolocation/photo2geo.py",
     "src/laitoxx/interfaces/gui/dialogs.py",
     "src/laitoxx/app/plugins/engine.py",
+    "src/laitoxx/app/plugins/leakosint_report.py",
     "src/laitoxx/features/osint/google_osint.py",
     "src/laitoxx/interfaces/tui/tool_forms.py",
     "src/laitoxx/core/localization/i18n.py",
