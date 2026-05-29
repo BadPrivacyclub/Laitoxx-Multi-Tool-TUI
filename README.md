@@ -1,307 +1,394 @@
-﻿# Laitoxx Multi-Tool TUI
+<p align="center">
+  <img src="desktop.png" alt="Laitoxx Multi-Tool TUI" width="100%"/>
+</p>
 
-**Version:** TUI Beta 1.0, based on Laitoxx Multi-Tool 2.3.
+<h1 align="center">Laitoxx Multi-Tool TUI</h1>
 
-Laitoxx Multi-Tool TUI is a console-first OSINT and cybersecurity toolkit built on Python 3.13 and Textual. This edition is intended for terminal environments: Windows Terminal, Linux shells, SSH sessions, WSL and Termux-like mobile consoles.
+<p align="center">
+  <b>OSINT & Cybersecurity Toolkit · Terminal-first · Python 3.13 · Textual</b>
+</p>
 
-The project keeps the existing tool registry, Lua plugin support, proxy-aware networking and report generation from the 2.3 codebase, but the primary interface is now the Textual TUI launched from `cli.py`.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.13+-blue?style=flat-square&logo=python" />
+  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20Termux-green?style=flat-square" />
+  <img src="https://img.shields.io/badge/Interface-TUI-purple?style=flat-square" />
+  <img src="https://img.shields.io/badge/Version-TUI%20Beta%201.0-orange?style=flat-square" />
+</p>
 
-## Purpose and Disclaimer
+---
 
-Use this software only for education, research, defensive security work and systems you are allowed to test. The authors are not responsible for misuse, unauthorized scanning or damage caused by this tool.
+## 🇬🇧
 
-## Highlights
+### What is this?
 
-- Textual TUI with keyboard navigation, command palette, settings dialog and theme support.
-- OSINT tools for phone, IP, email, Telegram, usernames, websites and images.
-- Web and network utilities: HTTP inspector, technology detection, CMS audit, JWT analyzer, subdomain finder, crawler and Nmap integration.
-- Photo geolocation with two modes: Netryx Astra V2 local/community indexes and GeoCLIP/PlaNet-like worldwide prediction.
-- Lua plugin system through `lupa` with sandboxed file access and proxy-aware host HTTP helpers.
-- Proxy settings for HTTP, HTTPS and SOCKS5 from the TUI settings window.
-- HTML report generation for collected results.
-- Platform installers for Windows, Debian/Ubuntu/Kali and native Termux.
-
-## Requirements
-
-- Python 3.13 or newer.
-- A terminal with ANSI color support.
-- `nmap` executable in `PATH` for the Nmap tool.
-- Optional root/admin privileges for Nmap profiles that require raw packet features. The TUI Nmap tool checks this at runtime and reports whether root/admin is available.
-- Optional Netryx Astra source path for the Netryx Photo geolocation mode. Set `NETRYX_ASTRA_PATH` or fill the Source path field in the tool form.
-- Optional GeoCLIP package for the global Photo geolocation mode. Original Google PlaNet weights are not public, so Laitoxx uses the open `geoclip` package for this workflow.
-
-Install Nmap separately:
+Laitoxx Multi-Tool TUI is a terminal-based OSINT and cybersecurity toolkit built on Python 3.13 and [Textual](https://textual.textualize.io/). It runs anywhere a modern terminal is available — Linux, Windows Terminal, WSL, SSH, and native Termux on Android. The primary interface is launched with a single command:
 
 ```bash
-# Debian/Ubuntu/Kali
-sudo apt install nmap
-
-# Termux
-pkg install nmap
-
-# macOS
-brew install nmap
-```
-
-On Windows, install Nmap from the official installer or a package manager such as winget/choco, then make sure `nmap.exe` is available in `PATH`.
-
-## Installation
-
-### Debian/Ubuntu/Kali
-
-```bash
-git clone https://github.com/Laitoxx/Laitoxx-Multi-Tool.git
-cd Laitoxx-Multi-Tool
-python3 install.py
-source .venv/bin/activate
 python cli.py
 ```
 
-Direct platform installer:
+### 🛠️ Features
+
+#### 🔍 OSINT
+| Tool | Description |
+|---|---|
+| **IP Info** | Geolocation, ASN, ISP, abuse contacts |
+| **Phone Search** | Carrier, country, timezone, VK/Avito/web links |
+| **Email Validator** | MX records, SMTP checks, reputation |
+| **Username OSINT** | Cross-platform username search across 500+ sites, avatar download, nickname variants, digital portrait |
+| **Gmail OSINT** | Account recovery information, linked services |
+| **Google OSINT** | Dork-based search queries |
+| **Telegram Search** | Username and phone search via Telegram API |
+| **Image Search** | Reverse image search across engines |
+| **Data Search** | Aggregate search across multiple open sources |
+| **DB Searcher** | Search local breach databases |
+| **User Search by Phone** | Phone → social media cross-reference |
+
+#### 🌐 Web & Network
+| Tool | Description |
+|---|---|
+| **HTTP Inspector** | Headers, cookies, redirects, security headers analysis |
+| **Website Info** | WHOIS, DNS, server fingerprint |
+| **Subdomain Finder** | Passive and active subdomain enumeration |
+| **Tech Detector** | CMS, frameworks, libraries detection |
+| **CMS Audit** | WordPress/Joomla/Drupal vulnerability checks |
+| **Web Crawler** | Link extraction and site mapping |
+| **Web Security Tools** | XSS, SQLi, open redirect scanner |
+| **Port Scanner** | Fast async TCP port scanner |
+| **Nmap Scanner** | Full nmap integration with XML parsing and profiles |
+| **CIDR Calculator** | Subnet math, broadcast, range |
+| **MAC Lookup** | OUI vendor database lookup |
+
+#### 🔐 Crypto & Utilities
+| Tool | Description |
+|---|---|
+| **Hash Identifier** | Detect hash type by signature |
+| **Text Hasher** | MD5, SHA-1/256/512, bcrypt and more |
+| **Rainbow Table Generator** | Generate hash:plaintext tables |
+| **JWT Analyzer** | Decode, inspect and detect JWT vulnerabilities |
+| **Password Generator** | Entropy-based password/passphrase generator |
+| **Regex Tester** | Interactive regex sandbox |
+| **Text Transformer** | Base64, URL encode, hex, ROT13, etc. |
+
+#### 📸 Photo Geolocation
+Two modes for locating where a photo was taken:
+- **Netryx Astra** — local/community indexes with Street View coverage. Build your own index or download community packs.
+- **GeoCLIP / PlaNet-like** — worldwide AI prediction, no reference index needed.
+
+Both run in a background worker process — the TUI stays responsive during heavy AI jobs.
+
+#### 🧩 Lua Plugin System
+Extend the tool with custom Lua scripts. Plugins are discovered automatically on startup, have sandboxed file access, proxy-aware HTTP helpers, and can generate graph reports. See [`docs/guides/plugin-building.md`](./docs/guides/plugin-building.md).
+
+Built-in plugins:
+- **LeakOSINT Search** — query the LeakOSINT API and build link graphs
+- **IP Lookup** — enriched IP info with graph output
+- **TikTok** — profile scrape
+- **IOC Extractor** — extract indicators of compromise from text
+- **GitHub Chrono Locator** — locate developers by commit timezone patterns
+
+#### ⚙️ TUI Interface
+- Keyboard navigation with a command palette (`Ctrl+P`)
+- Live tool filter (`/` or `f`)
+- 17 built-in themes (Dracula, Nord, Cyberpunk, Matrix, and more)
+- Proxy settings — HTTP, HTTPS, SOCKS5 — from the settings window
+- HTML report export for any tool result
+- Localization: 🇬🇧 English / 🇷🇺 Russian
+
+---
+
+### 📦 Installation
+
+#### 🐧 Debian / Ubuntu / Kali
 
 ```bash
+git clone https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git
+cd Laitoxx-Multi-Tool-TUI
 bash install-debian.sh
 source .venv/bin/activate
 python cli.py
 ```
 
-### Native Termux
+Or with the unified installer:
 
 ```bash
-pkg update
-pkg install git
-git clone https://github.com/Laitoxx/Laitoxx-Multi-Tool.git
-cd Laitoxx-Multi-Tool
-python install.py
-source .venv/bin/activate
-python cli.py
-```
-
-Direct platform installer:
-
-```bash
-bash install-termux.sh
-source .venv/bin/activate
-python cli.py
-```
-
-For PyTorch-dependent Photo geolocation features in native Termux, run the installer with `PHOTO2GEO_TORCH=tur` to use TUR packages, or choose `proot` and install inside Ubuntu/Debian through `proot-distro`.
-
-### macOS and Other Unix Shells
-
-```bash
-git clone https://github.com/Laitoxx/Laitoxx-Multi-Tool.git
-cd Laitoxx-Multi-Tool
 python3 install.py
 source .venv/bin/activate
 python cli.py
 ```
 
-Direct fallback installer:
+Install nmap separately:
+```bash
+sudo apt install nmap
+```
+
+---
+
+#### 📱 Termux (Android)
+
+<p align="center">
+  <img src="termux.png" alt="Laitoxx running on Termux" width="80%"/>
+</p>
+
+Laitoxx runs natively in Termux — no proot, no emulation needed for the core tools.
 
 ```bash
-bash install.sh
+pkg update && pkg install git python nmap
+git clone https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git
+cd Laitoxx-Multi-Tool-TUI
+bash install-termux.sh
 source .venv/bin/activate
 python cli.py
 ```
 
-### Windows
+> Photo Geolocation with PyTorch requires TUR packages or a proot Debian environment.  
+> Run `PHOTO2GEO_TORCH=tur bash install-termux.sh` to use TUR.
+
+---
+
+#### 🪟 Windows
 
 ```bat
-git clone https://github.com/Laitoxx/Laitoxx-Multi-Tool.git
-cd Laitoxx-Multi-Tool
-python install.py
-.venv\Scripts\activate.bat
-python cli.py
-```
-
-Direct platform installer:
-
-```bat
+git clone https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git
+cd Laitoxx-Multi-Tool-TUI
 install.bat
 .venv\Scripts\activate.bat
 python cli.py
 ```
 
-`install.py` is the unified auto selector. It chooses Windows, native Termux, Debian/Ubuntu/Kali or generic Unix automatically. `install.sh` still dispatches to `install-debian.sh` on apt-based systems and to `install-termux.sh` in native Termux. `install.bat` dispatches to `install-windows.bat`.
+Install nmap from [nmap.org](https://nmap.org/download.html) and add it to `PATH`.
 
-Installer options:
+---
 
-```bash
-# Install the optional PlaNet-like/GeoCLIP Photo Geolocation dependencies
-python install.py --install-planet
-
-# Skip the optional PlaNet-like/GeoCLIP dependencies without prompting
-python install.py --skip-planet
-
-# Native Termux PyTorch setup through TUR
-python install.py --install-planet --termux-torch tur
-
-# Show selected installer and options without running installation
-python install.py --install-planet --dry-run
-
-# Disable the animated installer status line
-python install.py --no-animation
-```
-
-During installation `install.py` shows an animated status line with the latest installer output. If the installer exits with an error, it prints the captured log.
-
-## Manual Setup
+#### 🍎 macOS / Other Unix
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate        # Linux/macOS/Termux
-# .venv\Scripts\activate.bat     # Windows
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+git clone https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git
+cd Laitoxx-Multi-Tool-TUI
+bash install.sh
+source .venv/bin/activate
 python cli.py
 ```
 
-## Running the TUI
+---
 
-Start the console interface:
-
-```bash
-python cli.py
-```
-
-Common keys:
-
-- `/` or `f`: focus tool filter.
-- `m`: focus tool menu.
-- `Enter` or `r`: run selected tool.
-- `o`: focus output.
-- `s`: save HTML report.
-- `,` or `Ctrl+,`: open settings.
-- `Ctrl+P`: command palette.
-- `q`: quit.
-
-## Nmap Notes
-
-The Nmap module uses the system `nmap` CLI and parses XML output from `nmap -oX -`. Before a scan it checks:
-
-- whether `nmap` exists in `PATH`;
-- current platform;
-- whether the process has root/admin privileges;
-- whether the selected profile requires elevated privileges.
-
-Current default profiles are conservative and usually work without root/admin, but raw packet profiles added later will be blocked unless the process is elevated.
-
-## Photo Geolocation
-
-The `Photo geolocation` tool is available under the information gathering category. It has a `Geolocation mode` switcher:
-
-- `Netryx Astra local index`: local/community index workflow using Netryx compact indexes.
-- `GeoCLIP / PlaNet-like global`: worldwide image-to-GPS prediction through the open `geoclip` package. This is the Laitoxx PlaNet-like mode; Google's original PlaNet source/weights are not required.
-
-Both modes use a Textual-native workflow. Heavy Photo geolocation jobs run in an isolated Python worker process; the parent Textual UI stays responsive, keeps handling keyboard/mouse input and shows animated loading/progress panels while the worker is active.
-
-The TUI form changes with the selected operation, so it only shows the relevant inputs:
-
-- `Check setup`: verifies Netryx path, dependencies and index files.
-- `Find photo location` in Netryx mode: uses a photo path plus a location hint like `55.75, 37.62, 2`.
-- `Find photo location` in GeoCLIP mode: uses only a photo path, result count, device and precision settings.
-- `Create local index`: enter a latitude/longitude center and radius, then let the worker scan Street View coverage, download directional panorama crops, extract MegaLoc descriptors and save the compact local index. The progress panel reports the current stage, completed/remaining work and estimated time; the job can be cancelled until final PCA/index assembly begins.
-- `Search community indexes`: type a city name, then use `Download` beside an index or `Download all` in the results panel. Bundle downloads show progress, speed and remaining time, and can be cancelled before installation.
-- `Import .netryx index`: choose a local `.netryx` file with the built-in file picker.
-- `Export current index`: type the output `.netryx` file path.
-
-For local files and folders, use the `Browse` button in the form. It opens a terminal file explorer, so users do not need to type full paths manually. Text values still work in the same field for city names and Hugging Face repo ids.
-
-By default it looks for Netryx Astra at the path configured in `NETRYX_ASTRA_PATH`; on the development machine the fallback path is `C:/Users/ShShu/Downloads/Netryx-Astra-V2-Geolocation-Tool-main/Netryx-Astra-V2-Geolocation-Tool-main`.
-
-Heavy AI dependencies such as `torch`, `torchvision`, `opencv-python`, `scikit-learn`, `timm`, `safetensors`, `einops` and `huggingface-hub` are included in `requirements.txt`, but model weights and MASt3R setup are still managed by Netryx Astra itself. GeoCLIP is optional and can be installed with:
+#### Optional: Photo Geolocation (GeoCLIP)
 
 ```bash
 python -m pip install -r requirements-photo2geo-geoclip.txt
 ```
 
-PlaNet-like/GeoCLIP model downloads are directed to the project folder:
-
-```text
-models/photo_geolocation/planet/
-```
-
-`Check setup` in the GeoCLIP/PlaNet-like mode reports whether this folder exists, how many cache/model files it contains, total cache size and whether a model-like weight file is present.
-
-On Termux, use `bash install-termux.sh` instead of the Debian installer. Native PyTorch usually needs TUR (`PHOTO2GEO_TORCH=tur bash install-termux.sh`) or a proot Debian/Ubuntu environment; plain `pip install torch` is not reliable on Android.
-
-Local index construction creates visual descriptors tied to Street View coordinates and headings rather than storing an EXIF/GPS lookup for the query image. `Grid resolution` controls coverage density and runtime; the default `300` is intentionally expensive for large areas.
-
-## Lua Plugins
-
-Lua plugins live in `lua_plugins/`. The local plugin API guide is available in [docs/guides/plugin-building.md](./docs/guides/plugin-building.md).
-
-The TUI discovers enabled Lua plugins on startup. Plugin file access is sandboxed to the plugin directory, and HTTP helpers use the configured proxy session.
-
-## Development Checks
-
+Or pass `--install-planet` to the unified installer:
 ```bash
-python -m ruff check .
-python -m ruff format .
-python -m pytest
-python scripts/check-structure.py
-python -m compileall -q src tests laitoxx cli.py gui.py install.py
+python install.py --install-planet
 ```
-
-## Project Layout
-
-```text
-src/laitoxx/app/                 Composition layer, registries, Lua plugin runtime
-src/laitoxx/core/                Settings, config, localization, installer orchestration
-src/laitoxx/features/            OSINT, network, web audit, crypto and utility features
-src/laitoxx/interfaces/          CLI, Textual TUI and legacy PyQt GUI adapters
-src/laitoxx/shared/              Reusable helpers and graph models
-laitoxx/                         Compatibility shim for `python -m laitoxx...`
-config/                          Runtime app settings and environment templates
-resources/data/                  Local data files, including username site database
-resources/translations/          Translation JSON files
-resources/themes/                Theme JSON files
-resources/background/            GUI/TUI background assets
-lua_plugins/                     Lua plugins and generated plugin artifacts
-public/                          Documentation images and examples
-docs/                            Architecture, guides and legal text
-tests/                           Regression tests
-requirements.txt                    Full desktop/server Python dependencies
-requirements-termux.txt             Native Termux TUI dependencies
-requirements-photo2geo-geoclip.txt  Optional GeoCLIP package
-install.sh                          Unix dispatcher installer
-install-debian.sh                   Debian/Ubuntu/Kali installer
-install-termux.sh                   Native Termux installer
-install-windows.bat                 Windows installer
-install.bat                         Windows compatibility wrapper
-install.py                          Cross-platform installer auto selector
-models/photo_geolocation/planet/    PlaNet-like/GeoCLIP project model cache
-```
-
-Architecture rules are documented in [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md).
 
 ---
 
-# Laitoxx Multi-Tool TUI (ru)
+### ⌨️ Keyboard Shortcuts
 
-Это TUI-версия Laitoxx для консольных интерфейсов: Windows Terminal,
-Linux/WSL, SSH, Termux и других терминалов. Основной запуск выполняется
-через `python cli.py`.
+| Key | Action |
+|---|---|
+| `/` or `f` | Focus tool filter |
+| `m` | Focus tool menu |
+| `Enter` / `r` | Run selected tool |
+| `o` | Focus output |
+| `s` | Save HTML report |
+| `,` or `Ctrl+,` | Open settings |
+| `Ctrl+P` | Command palette |
+| `q` | Quit |
 
-## Быстрый запуск
+---
 
-Linux/macOS/WSL/Termux:
+### ⚠️ Disclaimer
+
+Use this software only for education, security research, CTF challenges, and systems you are authorized to test. The authors take no responsibility for misuse or unauthorized activity.
+
+---
+
+## 🇷🇺
+
+### Что это?
+
+Laitoxx Multi-Tool TUI — это консольный инструмент для OSINT и кибербезопасности, построенный на Python 3.13 и [Textual](https://textual.textualize.io/). Работает везде, где есть современный терминал — Linux, Windows Terminal, WSL, SSH и нативный Termux на Android. Запуск одной командой:
 
 ```bash
-bash install.sh
+python cli.py
+```
+
+### 🛠️ Функциональность
+
+#### 🔍 OSINT
+| Инструмент | Описание |
+|---|---|
+| **IP Info** | Геолокация, ASN, ISP, контакты abuse |
+| **Поиск по номеру** | Оператор, страна, часовой пояс, ссылки VK/Avito |
+| **Email Validator** | MX-записи, SMTP-проверки, репутация |
+| **Username OSINT** | Поиск никнейма на 500+ сайтах, скачивание аватаров, генератор вариантов, цифровой портрет |
+| **Gmail OSINT** | Информация о восстановлении аккаунта и связанных сервисах |
+| **Google OSINT** | Поисковые запросы на основе дорков |
+| **Telegram Search** | Поиск по нику и номеру через Telegram API |
+| **Image Search** | Обратный поиск изображений по нескольким движкам |
+| **Data Search** | Агрегированный поиск по открытым источникам |
+| **DB Searcher** | Поиск по локальным базам утечек |
+| **Поиск по телефону** | Телефон → кросс-поиск по соцсетям |
+
+#### 🌐 Сеть и веб
+| Инструмент | Описание |
+|---|---|
+| **HTTP Inspector** | Заголовки, куки, редиректы, анализ security-заголовков |
+| **Website Info** | WHOIS, DNS, отпечаток сервера |
+| **Subdomain Finder** | Пассивный и активный поиск поддоменов |
+| **Tech Detector** | Определение CMS, фреймворков и библиотек |
+| **CMS Audit** | Проверка уязвимостей WordPress / Joomla / Drupal |
+| **Web Crawler** | Извлечение ссылок и картография сайта |
+| **Web Security Tools** | Сканер XSS, SQLi, open redirect |
+| **Port Scanner** | Быстрый асинхронный TCP-сканер портов |
+| **Nmap Scanner** | Полная интеграция nmap с парсингом XML и профилями |
+| **CIDR Calculator** | Подсети, broadcast, диапазоны |
+| **MAC Lookup** | Поиск вендора по OUI базе |
+
+#### 🔐 Крипто и утилиты
+| Инструмент | Описание |
+|---|---|
+| **Hash Identifier** | Определение типа хэша по сигнатуре |
+| **Text Hasher** | MD5, SHA-1/256/512, bcrypt и другие |
+| **Rainbow Table Generator** | Генерация таблиц хэш:текст |
+| **JWT Analyzer** | Декодирование, инспекция и поиск уязвимостей JWT |
+| **Password Generator** | Генератор паролей и парольных фраз на основе энтропии |
+| **Regex Tester** | Интерактивная sandbox для регулярных выражений |
+| **Text Transformer** | Base64, URL encode, hex, ROT13 и другие |
+
+#### 📸 Геолокация по фото
+Два режима определения места съёмки фотографии:
+- **Netryx Astra** — локальные и community-индексы на основе Street View. Можно строить свой индекс или скачивать готовые паки.
+- **GeoCLIP / PlaNet-like** — глобальное AI-предсказание без опорного индекса.
+
+Оба режима работают в фоновом процессе — TUI остаётся отзывчивым во время тяжёлых вычислений.
+
+#### 🧩 Lua-плагины
+Расширяйте инструментарий своими Lua-скриптами. Плагины обнаруживаются автоматически, имеют песочницу для файлового доступа и прокси-aware HTTP-хелперы, умеют строить граф-отчёты. Документация: [`docs/guides/plugin-building.md`](./docs/guides/plugin-building.md).
+
+Встроенные плагины:
+- **LeakOSINT Search** — запросы к LeakOSINT API и построение граф-связей
+- **IP Lookup** — расширенная информация об IP с графом
+- **TikTok** — сбор данных профиля
+- **IOC Extractor** — извлечение индикаторов компрометации из текста
+- **GitHub Chrono Locator** — определение локации разработчика по временным паттернам коммитов
+
+#### ⚙️ TUI-интерфейс
+- Навигация с клавиатуры, командная палитра (`Ctrl+P`)
+- Живой фильтр инструментов (`/` или `f`)
+- 17 встроенных тем (Dracula, Nord, Cyberpunk, Matrix и другие)
+- Прокси — HTTP, HTTPS, SOCKS5 — из окна настроек
+- Экспорт результатов в HTML-отчёт
+- Локализация: 🇬🇧 English / 🇷🇺 Русский
+
+---
+
+### 📦 Установка
+
+#### 🐧 Debian / Ubuntu / Kali
+
+```bash
+git clone https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git
+cd Laitoxx-Multi-Tool-TUI
+bash install-debian.sh
 source .venv/bin/activate
 python cli.py
 ```
 
-Windows:
+Или через универсальный установщик:
+
+```bash
+python3 install.py
+source .venv/bin/activate
+python cli.py
+```
+
+Установить nmap:
+```bash
+sudo apt install nmap
+```
+
+---
+
+#### 📱 Termux (Android)
+
+<p align="center">
+  <img src="termux.png" alt="Laitoxx в Termux" width="80%"/>
+</p>
+
+Laitoxx работает нативно в Termux — proot и эмуляция не нужны для основных инструментов.
+
+```bash
+pkg update && pkg install git python nmap
+git clone https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git
+cd Laitoxx-Multi-Tool-TUI
+bash install-termux.sh
+source .venv/bin/activate
+python cli.py
+```
+
+> Геолокация по фото с PyTorch требует TUR-пакеты или proot Debian.  
+> Запустите `PHOTO2GEO_TORCH=tur bash install-termux.sh` для установки через TUR.
+
+---
+
+#### 🪟 Windows
 
 ```bat
+git clone https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git
+cd Laitoxx-Multi-Tool-TUI
 install.bat
 .venv\Scripts\activate.bat
 python cli.py
 ```
 
-Для Nmap-инструмента нужен установленный `nmap` в `PATH`. Перед
-сканированием модуль проверяет окружение и наличие root/admin-прав. Профили,
-которым нужны повышенные права, не запускаются без них.
+Установить nmap с [nmap.org](https://nmap.org/download.html) и добавить в `PATH`.
+
+---
+
+#### 🍎 macOS / Другие Unix
+
+```bash
+git clone https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git
+cd Laitoxx-Multi-Tool-TUI
+bash install.sh
+source .venv/bin/activate
+python cli.py
+```
+
+---
+
+#### Опционально: Геолокация по фото (GeoCLIP)
+
+```bash
+python -m pip install -r requirements-photo2geo-geoclip.txt
+```
+
+Или через установщик:
+```bash
+python install.py --install-planet
+```
+
+---
+
+### ⌨️ Горячие клавиши
+
+| Клавиша | Действие |
+|---|---|
+| `/` или `f` | Фокус на фильтр инструментов |
+| `m` | Фокус на меню инструментов |
+| `Enter` / `r` | Запустить выбранный инструмент |
+| `o` | Фокус на вывод |
+| `s` | Сохранить HTML-отчёт |
+| `,` или `Ctrl+,` | Открыть настройки |
+| `Ctrl+P` | Командная палитра |
+| `q` | Выход |
+
+---
+
+### ⚠️ Дисклеймер
+
+Используйте этот инструмент только в образовательных целях, для исследований безопасности, CTF-соревнований и систем, которые вы уполномочены тестировать. Авторы не несут ответственности за неправомерное использование.
