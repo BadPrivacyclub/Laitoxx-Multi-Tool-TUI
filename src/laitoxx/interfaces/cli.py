@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from pathlib import Path
 
 from InquirerPy import inquirer
 from rich.console import Console
@@ -32,7 +33,7 @@ def configure_logging() -> None:
 
 def _load_tos_text() -> str:
     try:
-        return TOS_FILE.read_text(encoding="utf-8").strip()
+        return Path(TOS_FILE).read_text(encoding="utf-8").strip()
     except OSError:
         LOGGER.warning("Terms-of-Service file is missing; using fallback text.")
         return TOS_FALLBACK_TEXT
