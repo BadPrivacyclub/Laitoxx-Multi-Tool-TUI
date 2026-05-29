@@ -6,7 +6,6 @@ huggingface-hub
 InquirerPy>=0.3
 hashid
 lupa
-numpy
 paketlib
 phonenumbers
 Pillow
@@ -15,5 +14,4 @@ PySocks
 python-whois
 requests
 rich>=13.0
-safetensors
 textual>=0.80

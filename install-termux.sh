@@ -26,7 +26,7 @@ echo "==> Installing Python and git..."
 pkg install -y python git
 
 echo "==> Installing build tools..."
-pkg_try clang make cmake pkg-config binutils autoconf automake
+pkg_try clang make cmake pkg-config binutils autoconf automake meson ninja
 
 echo "==> Installing Rust (needed by some pip packages)..."
 pkg_try rust
@@ -93,7 +93,8 @@ fi
 
 echo "==> Installing Python dependencies..."
 # Skip pip upgrade — Termux ships a patched pip, upgrading breaks it
-python -m pip install --no-build-isolation -r requirements-termux.txt
+# --prefer-binary: use pre-built wheels, avoid source builds that need mesonpy/maturin
+python -m pip install --prefer-binary --no-build-isolation -r requirements-termux.txt
 
 INSTALL_GEOCLIP="${LAITOXX_INSTALL_PLANET:-${LAITOXX_INSTALL_GEOCLIP:-}}"
 if [ -z "$INSTALL_GEOCLIP" ] && [ -t 0 ]; then
@@ -102,7 +103,7 @@ fi
 case "$(printf '%s' "${INSTALL_GEOCLIP:-}" | tr '[:upper:]' '[:lower:]')" in
     y|yes)
         echo "Installing optional GeoCLIP dependencies..."
-        python -m pip install --no-build-isolation -r requirements-photo2geo-geoclip.txt
+        python -m pip install --prefer-binary --no-build-isolation -r requirements-photo2geo-geoclip.txt
         ;;
 esac
 
