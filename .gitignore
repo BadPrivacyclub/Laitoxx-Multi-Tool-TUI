@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+reports/
+logs/
+resources/avatar_cache/
+models/photo_geolocation/planet/cache/
+
+# Lua plugin debug dumps and saved graphs (user data)
+lua_plugins/debug/
+lua_plugins/*.graph.json
+public/examples/
+project_structure.txt
+
+# User config with API tokens (keep example, ignore actual)
+config/lua_plugin_settings.json
+config/app_settings.json
+config/tos_accepted.txt
+config/user_agreement_accepted.txt
+.env
+tests/
+.vscode/

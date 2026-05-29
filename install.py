@@ -1,0 +1,18 @@
+from __future__ import annotations
+
+# ruff: noqa: E402, I001
+
+import sys
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parent
+SRC_DIR = ROOT_DIR / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from laitoxx.core.install import *  # noqa: F403
+from laitoxx.core.install import main
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

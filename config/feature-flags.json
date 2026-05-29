@@ -1,0 +1,5 @@
+{
+  "lua_plugins": true,
+  "photo_geolocation": true,
+  "legacy_gui": true
+}

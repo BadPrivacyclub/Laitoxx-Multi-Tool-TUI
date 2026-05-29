@@ -1,0 +1,18 @@
+name: Architecture Check
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Check architecture rules
+        run: python scripts/check-structure.py
+      - name: Compile Python sources
+        run: python -m compileall -q src tests laitoxx cli.py gui.py install.py

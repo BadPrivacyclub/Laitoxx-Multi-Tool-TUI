@@ -1,0 +1,484 @@
+Screen {
+    background: $background;
+    color: $foreground;
+}
+
+#app-header.phone,
+#app-footer.phone {
+    display: none;
+}
+
+#root {
+    layout: horizontal;
+    height: 1fr;
+}
+
+#root.narrow,
+#root.phone {
+    layout: vertical;
+}
+
+#sidebar {
+    width: 32;
+    min-width: 32;
+    border-right: tall $primary;
+    background: $surface;
+    padding: 1 1 0 1;
+}
+
+#sidebar:focus-within {
+    border-right: tall $accent;
+}
+
+#sidebar.compact {
+    width: 28;
+    min-width: 28;
+}
+
+#sidebar.narrow {
+    width: 1fr;
+    min-width: 0;
+    height: 38%;
+    max-height: 15;
+    border-right: none;
+    border-bottom: tall $primary;
+    padding: 1 1 0 1;
+}
+
+#sidebar.narrow:focus-within {
+    border-bottom: tall $accent;
+}
+
+#sidebar.micro {
+    height: 10;
+    max-height: 10;
+    padding: 0 1;
+}
+
+#sidebar.short {
+    height: 9;
+    max-height: 9;
+}
+
+#sidebar.phone {
+    width: 1fr;
+    min-width: 0;
+    height: 8;
+    max-height: 8;
+    border-right: none;
+    border-bottom: tall $primary;
+    padding: 0 1;
+}
+
+#sidebar.phone:focus-within {
+    border-bottom: tall $accent;
+}
+
+#workbench {
+    width: 1fr;
+    background: $panel;
+    padding: 1 2;
+}
+
+#workbench.narrow {
+    width: 1fr;
+    height: 1fr;
+    padding: 1;
+}
+
+#workbench.micro {
+    padding: 0 1;
+}
+
+#workbench.phone {
+    width: 1fr;
+    height: 1fr;
+    padding: 0 1;
+}
+
+#brand {
+    height: 4;
+    content-align: left middle;
+    text-style: bold;
+    color: $primary;
+    margin-bottom: 1;
+}
+
+#brand.compact {
+    height: 3;
+}
+
+#brand.micro,
+#brand.short,
+#brand.phone {
+    display: none;
+}
+
+#filter {
+    height: 3;
+    margin-bottom: 0;
+    border: none;
+    border-bottom: tall $border-blurred;
+    padding: 0 1;
+}
+
+#filter:focus {
+    border-bottom: tall $primary;
+}
+
+#filter.phone {
+    height: 3;
+    margin-bottom: 0;
+}
+
+#tool-tree {
+    height: 1fr;
+    background: $surface;
+}
+
+#tool-tree.micro,
+#tool-tree.phone {
+    height: 1fr;
+}
+
+#tool-tree:focus {
+    background-tint: $primary 5%;
+}
+
+#details {
+    height: 7;
+    background: $surface;
+    padding: 1 2 0 2;
+    margin-bottom: 1;
+}
+
+#details.compact {
+    height: 6;
+}
+
+#details.narrow {
+    height: 5;
+    padding: 0 1;
+}
+
+#details.micro,
+#details.short,
+#details.phone {
+    display: none;
+}
+
+#output {
+    height: 1fr;
+    border: tall $primary;
+    background: $background;
+    padding: 1 2;
+    margin-bottom: 0;
+}
+
+#output.narrow {
+    padding: 0 1;
+}
+
+#output.micro {
+    padding: 0;
+}
+
+#output.phone {
+    padding: 0;
+    margin-bottom: 0;
+}
+
+#output:focus {
+    border: tall $accent;
+}
+
+#hub-index-actions {
+    display: none;
+    height: auto;
+    max-height: 16;
+    border: tall $border-blurred;
+    background: $surface;
+    padding: 0 1;
+}
+
+#hub-index-actions.visible {
+    display: block;
+}
+
+.hub-index-header,
+.hub-index-row {
+    height: 3;
+}
+
+.hub-index-heading,
+.hub-index-summary {
+    width: 1fr;
+    content-align: left middle;
+}
+
+.hub-index-heading {
+    text-style: bold;
+    color: $primary;
+}
+
+.hub-index-row Button,
+#hub-download-all {
+    width: 16;
+}
+
+#hub-download-progress {
+    height: 8;
+    border-top: tall $primary;
+    padding-top: 1;
+}
+
+#index-create-progress {
+    height: 9;
+    border-top: tall $primary;
+    padding-top: 1;
+}
+
+#photo2geo-activity {
+    height: 5;
+    border-top: tall $primary;
+    padding-top: 1;
+}
+
+#hub-download-progress.hidden {
+    display: none;
+}
+
+.hub-download-progress-header {
+    height: 3;
+}
+
+#hub-download-spinner,
+#index-create-spinner,
+#photo2geo-activity-spinner {
+    width: 5;
+    height: 3;
+}
+
+#hub-download-spinner.finished,
+#index-create-spinner.finished,
+#photo2geo-activity-spinner.finished {
+    display: none;
+}
+
+#hub-download-progress-title,
+#index-create-progress-title,
+#photo2geo-activity-title {
+    width: 1fr;
+    content-align: left middle;
+}
+
+.photo2geo-activity-header {
+    height: 3;
+}
+
+#hub-download-cancel,
+#index-create-cancel {
+    width: 16;
+}
+
+#hub-download-progress-bar,
+#index-create-progress-bar {
+    height: 1;
+}
+
+#hub-download-progress-stats,
+#index-create-progress-stats,
+#index-create-area,
+#photo2geo-activity-stats {
+    height: 1;
+    color: $foreground-muted;
+}
+
+#status {
+    height: 1;
+    content-align: right middle;
+    background: $background;
+    color: $foreground-muted;
+    padding: 0 1;
+}
+
+#status.phone {
+    height: 1;
+}
+
+#status.running {
+    color: $warning;
+}
+
+#status.success {
+    color: $success;
+}
+
+#status.error {
+    color: $error;
+}
+
+#status.info {
+    color: $primary;
+}
+
+ModalScreen {
+    align: center middle;
+}
+
+#input-dialog,
+#settings-dialog {
+    width: 60;
+    max-width: 96%;
+    height: auto;
+    max-height: 90%;
+    border: round $primary;
+    background: $panel;
+    padding: 1 2;
+}
+
+#file-picker-dialog {
+    width: 72;
+    max-width: 96%;
+    height: 32;
+    max-height: 90%;
+    border: round $primary;
+    background: $panel;
+    padding: 1 2;
+}
+
+#settings-dialog {
+    min-height: 34;
+}
+
+#input-title {
+    text-style: bold;
+    color: $primary;
+    margin-bottom: 1;
+}
+
+#input-fields {
+    height: auto;
+    max-height: 70%;
+    min-height: 1;
+    overflow-y: auto;
+}
+
+.field-label {
+    margin-top: 1;
+    color: $foreground-muted;
+}
+
+.boolean-field {
+    margin-top: 1;
+}
+
+#file-picker-path {
+    height: 1;
+    color: $foreground-muted;
+    margin-bottom: 1;
+}
+
+#file-picker-tree {
+    height: 1fr;
+    border: tall $border-blurred;
+    background: $surface;
+    padding: 0 1;
+}
+
+#file-picker-tree:focus {
+    border: tall $primary;
+}
+
+.path-field-row {
+    height: 3;
+}
+
+.path-field-row Input {
+    width: 1fr;
+}
+
+.browse-button {
+    width: 10;
+    margin: 0 0 0 1;
+}
+
+TextArea {
+    height: 6;
+}
+
+SelectionList {
+    max-height: 8;
+}
+
+#settings-dialog Select > SelectOverlay {
+    max-height: 8;
+    border: tall $primary;
+    background: $surface;
+}
+
+Input {
+    padding: 0 1;
+}
+
+Input:focus,
+Select:focus,
+SelectionList:focus,
+TextArea:focus {
+    border: tall $primary;
+}
+
+Button {
+    width: 12;
+    margin: 0 1;
+}
+
+Button:hover {
+    tint: $primary 15%;
+}
+
+Button:focus {
+    text-style: bold;
+}
+
+#input-actions {
+    height: 3;
+    margin-top: 1;
+    align-horizontal: center;
+    content-align: center middle;
+}
+
+Footer .footer--key {
+    margin: 0 1;
+}
+
+Footer .footer--description {
+    margin-right: 2;
+}
+
+CommandPalette {
+    background: $background 70%;
+}
+
+CommandPalette > Vertical {
+    max-width: 96%;
+    max-height: 70%;
+    margin-top: 2;
+    border: round $accent;
+    background: $panel;
+}
+
+CommandPalette #--input {
+    border: tall $primary;
+    background: $surface;
+    padding: 0 1;
+}
+
+CommandPalette #--results {
+    border-top: tall $accent;
+    background: $surface;
+}
+
+CommandPalette LoadingIndicator {
+    border-bottom: tall $accent;
+}
