@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import subprocess
 import sys
 from pathlib import Path
 
@@ -16,6 +17,76 @@ from laitoxx.core.settings.tos import is_accepted, mark_accepted
 
 LOGGER = logging.getLogger(__name__)
 TOS_FILE = USER_AGREEMENT_FILE
+
+REPO_URL = "https://github.com/BadPrivacyclub/Laitoxx-Multi-Tool-TUI.git"
+_PROJECT_ROOT = Path(__file__).resolve().parents[4]
+
+
+def _check_for_updates(console: Console) -> bool:
+    """Return True if remote has new commits. Silently skips if git/network unavailable."""
+    try:
+        result = subprocess.run(
+            ["git", "fetch", "--dry-run", "origin", "main"],
+            cwd=_PROJECT_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=6,
+        )
+        behind = subprocess.run(
+            ["git", "rev-list", "--count", "HEAD..origin/main"],
+            cwd=_PROJECT_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=6,
+        )
+        count = int(behind.stdout.strip() or "0")
+        if count > 0:
+            console.print(
+                f"\n[bold yellow]⬆  Update available:[/] {count} new commit(s) on main.\n"
+                f"   Run [bold cyan]git pull[/] in the project folder to update, "
+                f"then re-run [bold cyan]bash install-termux.sh[/] (or install-debian.sh) "
+                f"to refresh dependencies.",
+                highlight=False,
+            )
+            if sys.stdin.isatty():
+                do_update = inquirer.confirm(
+                    message="Pull and update now?", default=False
+                ).execute()
+                if do_update:
+                    _do_update(console)
+                    return True
+        return False
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _do_update(console: Console) -> None:
+    """Run git pull and reinstall dependencies."""
+    console.print("[cyan]Pulling latest changes…[/]")
+    try:
+        subprocess.run(["git", "pull", "--ff-only", "origin", "main"],
+                       cwd=_PROJECT_ROOT, check=True, timeout=60)
+    except subprocess.CalledProcessError as exc:
+        console.print(f"[red]git pull failed:[/] {exc}")
+        return
+
+    # Detect platform and re-run the right installer
+    req = _PROJECT_ROOT / "requirements.txt"
+    req_termux = _PROJECT_ROOT / "requirements-termux.txt"
+    venv_pip = _PROJECT_ROOT / ".venv" / "bin" / "python"
+    if not venv_pip.exists():
+        venv_pip = _PROJECT_ROOT / ".venv" / "Scripts" / "python.exe"
+
+    if venv_pip.exists():
+        in_termux = bool(subprocess.run(
+            ["command", "-v", "pkg"], shell=True, capture_output=True).returncode == 0)
+        req_file = str(req_termux if in_termux else req)
+        console.print(f"[cyan]Re-installing dependencies from {req_file}…[/]")
+        subprocess.run(
+            [str(venv_pip), "-m", "pip", "install", "--prefer-binary", "-r", req_file],
+            check=False, timeout=300,
+        )
+    console.print("[green]Update complete.[/] Restart cli.py to apply changes.")
 TOS_FALLBACK_TEXT = (
     "By using this software you agree to use it solely for educational and "
     "research purposes. The authors take no responsibility for misuse or "
@@ -74,6 +145,8 @@ def main(argv: list[str] | None = None) -> None:
     console = Console()
     if not _require_tos_acceptance(console):
         return
+
+    _check_for_updates(console)
 
     settings = AppSettings()
     apply_proxy_settings(settings.proxy)

@@ -4,6 +4,7 @@ beautifulsoup4
 colorama
 huggingface-hub
 InquirerPy>=0.3
+prompt_toolkit>=3.0
 hashid
 lupa
 paketlib
@@ -15,3 +16,4 @@ python-whois
 requests
 rich>=13.0
 textual>=0.80
+wcwidth
